@@ -130,7 +130,7 @@ export const content = {
     row: '',
     seat: '',
     /** Фото/скан настоящего билета: положи файл в public/ticket.jpg и укажи путь. '' — скрыть */
-    image: '',
+    image: 'ticket.jpg',
     message: 'Сені театрға шақырамын. Бұл кеш — тек екеуміз үшін ❤️',
     finalLine: 'Кездескенше…',
     tearHint: 'Билетті жырт',
