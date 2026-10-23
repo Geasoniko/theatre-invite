@@ -30,7 +30,8 @@ export const content = {
 
   /* ───────── Экран 2: письмо ───────── */
   letter: {
-    greeting: 'Сәлем, менің жаным',
+    /** Имя — поменяй здесь */
+    greeting: 'Сәлем, Аля',
     lines: [
       'Меніңше, бізге жаңа фото қосу керек сияқты…',
       'Қалай қарайсың, бірге бір әдемі күн өткізейік пе?',
@@ -54,13 +55,13 @@ export const content = {
     subtitle: 'Біздің естеліктер',
     placeholderHint: 'Мұнда біздің фотолар болады',
     continueButton: 'Бір құпия бар…',
-    photos: [] as Photo[],
-    // Пример заполнения:
-    // photos: [
-    //   { src: 'photos/01.jpg', caption: 'Алғашқы кездесу', date: '12.05.2025' },
-    //   { src: 'photos/02.jpg', caption: 'Теңіз жағасы' },
-    //   { src: 'photos/03.jpg' },
-    // ],
+    photos: [
+      { src: 'photos/photo1.PNG', caption: 'Кафеде' },
+      { src: 'photos/photo2.PNG', caption: 'Университетте' },
+      // HEIC браузеры не показывают — переконвертируй photo3.heic в photo3.jpg
+      { src: 'photos/photo3.jpg', caption: 'Теңіз жағасында' },
+    ] as Photo[],
+    // Дата (необязательно): { src: 'photos/photo1.PNG', caption: 'Кафеде', date: '12.05.2025' }
   },
 
   /* ───────── Экран 4: квест за билетом ───────── */
@@ -124,7 +125,7 @@ export const content = {
     /** Название спектакля — впиши, когда будет известно */
     play: 'Спектакль',
     /** Дата и время — впиши свои */
-    date: '__.__.2026',
+    date: '01.11.2026',
     time: '19:00',
     row: '',
     seat: '',
