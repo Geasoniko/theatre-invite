@@ -692,6 +692,323 @@ body {
   100% { opacity: 0; transform: translateY(240px) rotate(260deg); }
 }
 
+
+/* ═══════════════════════ КАССИР ═══════════════════════ */
+.cashier {
+  width: min(78vw, 340px);
+  margin: 0 auto;
+  filter: drop-shadow(0 24px 30px rgba(64, 53, 47, 0.18));
+}
+.cashier svg {
+  display: block;
+  overflow: visible;
+}
+.cashier-body {
+  animation: cashier-breathe 3.4s ease-in-out infinite;
+}
+.cashier-eyes {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: cashier-blink 4.6s ease-in-out infinite;
+}
+.cashier-arm {
+  transform-box: fill-box;
+  transform-origin: 0% 100%;
+  transition: transform 700ms var(--ease-paper);
+}
+.cashier.is-idle .cashier-arm {
+  animation: cashier-wave 1.6s var(--ease-in-out-soft) 400ms 2;
+}
+.cashier.is-giving .cashier-arm {
+  transform: rotate(70deg);
+}
+.cashier.is-given .cashier-arm {
+  transform: rotate(0deg);
+}
+.cashier-ticket {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.cashier.is-giving .cashier-ticket {
+  animation: cashier-ticket-give 1500ms var(--ease-paper) forwards;
+}
+.cashier.is-given .cashier-ticket {
+  opacity: 0;
+}
+.cashier.is-given .cashier-smile {
+  d: path('M162 184 q18 16 36 0');
+}
+
+@keyframes cashier-breathe {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+@keyframes cashier-blink {
+  0%, 92%, 100% { transform: scaleY(1); }
+  95% { transform: scaleY(0.08); }
+}
+@keyframes cashier-wave {
+  0%, 100% { transform: rotate(0deg); }
+  30% { transform: rotate(-22deg); }
+  60% { transform: rotate(8deg); }
+}
+@keyframes cashier-ticket-give {
+  0% { transform: translate(0, 0); opacity: 1; }
+  45% { transform: translate(-56px, 84px); opacity: 1; }
+  70% { transform: translate(-56px, 98px); opacity: 1; }
+  100% { transform: translate(-56px, 140px); opacity: 0; }
+}
+
+/* облачко с репликой */
+.bubble {
+  position: relative;
+  background: #fffdf9;
+  border: 1px solid rgba(64, 53, 47, 0.12);
+  border-radius: 16px;
+  padding: 0.9rem 1.2rem;
+  box-shadow: 0 16px 30px -24px rgba(64, 53, 47, 0.5);
+}
+.bubble::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -8px;
+  width: 14px;
+  height: 14px;
+  background: #fffdf9;
+  border-right: 1px solid rgba(64, 53, 47, 0.12);
+  border-bottom: 1px solid rgba(64, 53, 47, 0.12);
+  transform: translateX(-50%) rotate(45deg);
+}
+
+
+/* ═══════════════════════ ФИНАЛ: он и она ═══════════════════════ */
+.finale {
+  width: min(88vw, 420px);
+  margin: 0 auto;
+}
+.finale svg {
+  display: block;
+  overflow: visible;
+}
+
+/* выход: он слева, она справа */
+.finale-boy,
+.finale-girl,
+.finale-bouquet {
+  transition: transform 1100ms var(--ease-paper);
+}
+.finale-boy,
+.finale-bouquet {
+  transform: translateX(-280px);
+}
+.finale-girl {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  transform: translateX(280px);
+}
+.finale.is-enter .finale-boy,
+.finale.is-give .finale-boy,
+.finale.is-kiss .finale-boy,
+.finale.is-heart .finale-boy,
+.finale.is-enter .finale-bouquet,
+.finale.is-enter .finale-girl,
+.finale.is-give .finale-girl,
+.finale.is-heart .finale-girl {
+  transform: translateX(0);
+}
+.finale-shadow-boy,
+.finale-shadow-girl {
+  opacity: 0;
+  transition: opacity 600ms ease 600ms;
+}
+.finale.is-enter .finale-shadow-boy,
+.finale.is-enter .finale-shadow-girl,
+.finale.is-give .finale-shadow-boy,
+.finale.is-give .finale-shadow-girl,
+.finale.is-kiss .finale-shadow-boy,
+.finale.is-kiss .finale-shadow-girl,
+.finale.is-heart .finale-shadow-boy,
+.finale.is-heart .finale-shadow-girl {
+  opacity: 0.1;
+}
+
+/* глаза */
+.finale-eyes,
+.finale-girl-eyes {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: cashier-blink 4.2s ease-in-out infinite;
+}
+.finale-girl-eyes {
+  animation-delay: 1.3s;
+}
+
+/* он протягивает букет */
+.finale-arm-right {
+  transform-box: fill-box;
+  transform-origin: 0% 0%;
+  transition: transform 700ms var(--ease-paper);
+}
+.finale.is-give .finale-arm-right {
+  transform: rotate(-34deg);
+}
+
+/* букет переходит к ней */
+.finale.is-give .finale-bouquet,
+.finale.is-heart .finale-bouquet {
+  transform: translate(98px, -6px);
+}
+.finale.is-kiss .finale-bouquet {
+  transform: translate(4px, -4px) rotate(-9deg);
+}
+.finale-shadow-girl {
+  transition: opacity 600ms ease 600ms, transform 1100ms var(--ease-paper);
+}
+.finale.is-kiss .finale-shadow-girl {
+  transform: translateX(-70px);
+}
+.finale-girl-arms-hold {
+  opacity: 0;
+  transition: opacity 250ms ease;
+}
+.finale-girl-arms-down {
+  transition: opacity 250ms ease;
+}
+.finale.is-give .finale-girl-arms-hold,
+.finale.is-kiss .finale-girl-arms-hold,
+.finale.is-heart .finale-girl-arms-hold {
+  opacity: 1;
+  transition-delay: 850ms;
+}
+.finale.is-give .finale-girl-arms-down,
+.finale.is-kiss .finale-girl-arms-down,
+.finale.is-heart .finale-girl-arms-down {
+  opacity: 0;
+  transition-delay: 850ms;
+}
+
+/* поцелуй в щёку */
+.finale.is-kiss .finale-girl {
+  transform: translateX(-76px) rotate(-9deg);
+}
+.finale-boy-head {
+  transform-box: fill-box;
+  transform-origin: 50% 80%;
+  transition: transform 600ms var(--ease-paper);
+}
+.finale.is-kiss .finale-boy-head {
+  transform: rotate(7deg);
+}
+.finale-girl-eyes-closed {
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+.finale.is-kiss .finale-girl-eyes-closed {
+  opacity: 1;
+  transition-delay: 500ms;
+}
+.finale.is-kiss .finale-girl-eyes {
+  opacity: 0;
+  transition: opacity 200ms ease 500ms;
+  animation: none;
+}
+.finale-kissmark {
+  opacity: 0;
+  transition: opacity 300ms ease;
+}
+.finale.is-kiss .finale-kissmark {
+  opacity: 1;
+  transition-delay: 800ms;
+}
+.finale.is-heart .finale-kissmark {
+  opacity: 1;
+}
+.finale-blush {
+  transition: opacity 500ms ease;
+}
+.finale.is-kiss .finale-blush,
+.finale.is-heart .finale-blush {
+  opacity: 0.85;
+}
+
+/* сердце руками */
+.finale-pose-give,
+.finale-pose-heart {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  transition: opacity 350ms ease, transform 600ms var(--ease-out-soft);
+}
+.finale-pose-heart {
+  opacity: 0;
+  transform: scale(0.92);
+}
+.finale.is-heart .finale-pose-give {
+  opacity: 0;
+}
+.finale.is-heart .finale-pose-heart {
+  opacity: 1;
+  transform: scale(1);
+  transition-delay: 250ms;
+}
+.finale.is-heart .finale-smile {
+  d: path('M162 150 q18 16 36 0');
+}
+
+/* большое сердце над головой */
+.finale-bigheart {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.finale-bigheart-stroke {
+  stroke-dasharray: 320;
+  stroke-dashoffset: 320;
+  opacity: 0;
+}
+.finale-bigheart-fill {
+  opacity: 0;
+}
+.finale.is-heart .finale-bigheart-stroke {
+  animation: finale-draw 1300ms var(--ease-in-out-soft) 700ms forwards;
+}
+.finale.is-heart .finale-bigheart-fill {
+  animation: finale-fill 700ms ease 1900ms forwards;
+}
+.finale.is-heart .finale-bigheart {
+  animation: finale-pulse 1400ms var(--ease-in-out-soft) 2600ms 2;
+}
+
+/* маленькие сердечки */
+.finale.is-kiss .finale-heart {
+  animation: finale-rise 1700ms var(--ease-out-soft) 700ms forwards;
+}
+.finale.is-heart .finale-heart {
+  animation: finale-rise-again 1700ms var(--ease-out-soft) 900ms forwards;
+}
+
+@keyframes finale-draw {
+  0% { stroke-dashoffset: 320; opacity: 1; }
+  100% { stroke-dashoffset: 0; opacity: 1; }
+}
+@keyframes finale-fill {
+  0% { opacity: 0; }
+  100% { opacity: 0.9; }
+}
+@keyframes finale-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.07); }
+}
+@keyframes finale-rise {
+  0% { opacity: 0; transform: translateY(0); }
+  20% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-80px); }
+}
+@keyframes finale-rise-again {
+  0% { opacity: 0; transform: translateY(0); }
+  20% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-80px); }
+}
+
 /* ═══════════════════════ reduced motion ═══════════════════════ */
 @media (prefers-reduced-motion: reduce) {
   html {
@@ -715,7 +1032,34 @@ body {
     transition-delay: 0ms !important;
   }
   .confetti,
-  .option.is-wrong {
-    animation: none;
+  .option.is-wrong,
+  .cashier-body,
+  .cashier-eyes,
+  .cashier-arm,
+  .cashier-ticket,
+  .finale-eyes,
+  .finale-girl-eyes,
+  .finale-heart,
+  .finale-bigheart,
+  .finale-bigheart-stroke,
+  .finale-bigheart-fill {
+    animation: none !important;
+  }
+  .finale.is-heart .finale-bigheart-stroke,
+  .finale.is-heart .finale-bigheart-fill {
+    opacity: 0.9;
+    stroke-dashoffset: 0;
+  }
+  .finale-boy,
+  .finale-girl,
+  .finale-bouquet,
+  .finale-pose-give,
+  .finale-pose-heart,
+  .finale-arm-right,
+  .finale-boy-head {
+    transition: none;
+  }
+  .cashier-arm {
+    transition: none;
   }
 }
