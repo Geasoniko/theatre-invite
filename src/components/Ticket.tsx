@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { content } from '../content'
-import { useReducedMotion, useReveal } from '../hooks'
+import { useReducedMotion, useReveal, useTimeouts } from '../hooks'
+import { Cashier, type CashierPhase } from './Cashier'
+import { Finale } from './Finale'
 
 const CONFETTI = Array.from({ length: 14 }, (_, i) => ({
   left: 6 + ((i * 37) % 88),
@@ -12,8 +14,23 @@ const CONFETTI = Array.from({ length: 14 }, (_, i) => ({
 export function Ticket() {
   const t = content.ticket
   const [torn, setTorn] = useState(false)
+  const [phase, setPhase] = useState<CashierPhase>('idle')
   const reduced = useReducedMotion()
   const ref = useReveal<HTMLDivElement>()
+  const later = useTimeouts()
+  const c = t.cashier
+
+  function askTicket() {
+    if (phase !== 'idle') return
+    if (reduced) {
+      setPhase('given')
+      return
+    }
+    setPhase('giving')
+    later(() => setPhase('given'), 1700)
+  }
+
+  const bubbleText = phase === 'idle' ? c.greeting : phase === 'giving' ? c.giving : c.done
 
   const details = [
     { label: 'Спектакль', value: t.play },
@@ -29,7 +46,41 @@ export function Ticket() {
         <p className="eyebrow text-center">{t.eyebrow}</p>
         <h2 className="display mt-4 text-center text-[32px] text-cocoa sm:text-[42px]">{t.title}</h2>
 
-        <div className="ticket-scene mt-10">
+        {/* кассир у окошка */}
+        <div className="mt-10">
+          <div className="bubble mx-auto max-w-xs text-center" aria-live="polite">
+            <p className="display text-[19px] text-cocoa">{bubbleText}</p>
+          </div>
+          <div className="mt-6">
+            <Cashier phase={phase} />
+          </div>
+          <div
+            className="flex justify-center overflow-hidden"
+            style={{
+              maxHeight: phase === 'idle' ? 80 : 0,
+              marginTop: phase === 'idle' ? 24 : 0,
+              opacity: phase === 'idle' ? 1 : 0,
+              transition: 'max-height 500ms var(--ease-paper), margin-top 500ms var(--ease-paper), opacity 300ms ease',
+            }}
+          >
+            <button type="button" className="btn btn-primary" onClick={askTicket} tabIndex={phase === 'idle' ? 0 : -1}>
+              {c.askButton}
+            </button>
+          </div>
+        </div>
+
+        <div
+          className="ticket-scene overflow-hidden"
+          style={{
+            maxHeight: phase === 'given' ? 2000 : 0,
+            marginTop: phase === 'given' ? 40 : 0,
+            opacity: phase === 'given' ? 1 : 0,
+            transform: phase === 'given' ? 'none' : 'translateY(-24px)',
+            transition:
+              'max-height 900ms var(--ease-paper), margin-top 700ms var(--ease-paper), opacity 700ms ease 200ms, transform 800ms var(--ease-paper)',
+          }}
+          aria-hidden={phase !== 'given'}
+        >
           <div className={['ticket', torn ? 'is-torn' : ''].join(' ')}>
             {/* корешок */}
             <div className="ticket-stub-wrap">
@@ -88,7 +139,7 @@ export function Ticket() {
               <div
                 className="mt-7 overflow-hidden"
                 style={{
-                  maxHeight: torn ? 600 : 0,
+                  maxHeight: torn ? 2400 : 0,
                   opacity: torn ? 1 : 0,
                   transition: 'max-height 900ms var(--ease-paper) 400ms, opacity 700ms ease 600ms',
                 }}
@@ -108,15 +159,39 @@ export function Ticket() {
                     <figcaption className="caption px-1 pt-3">{t.play}</figcaption>
                   </figure>
                 ) : null}
+
+                {t.file || t.image ? (
+                  <div className="mt-7 flex flex-col items-center gap-2">
+                    <a
+                      className="btn btn-primary"
+                      href={t.file || t.image}
+                      download={t.file ? 'bilet.pdf' : 'bilet.jpg'}
+                    >
+                      <DownloadIcon />
+                      {t.downloadButton}
+                    </a>
+                    <span className="text-[12px] tracking-[0.04em] text-muted">{t.downloadNote}</span>
+                  </div>
+                ) : null}
               </div>
             </div>
           </div>
         </div>
 
-        {!torn ? (
+        {!torn && phase === 'given' ? (
           <p className="mt-6 text-center text-[13px] text-muted">{t.tearNote}</p>
         ) : null}
+
+        {torn ? <Finale /> : null}
       </div>
     </section>
+  )
+}
+
+function DownloadIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M12 4v11m0 0-4-4m4 4 4-4M5 19h14" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
   )
 }
